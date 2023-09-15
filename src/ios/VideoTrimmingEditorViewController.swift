@@ -1,5 +1,6 @@
 import Cordova
 import Cordova
+import Cordova
 import UIKit
 import AVFoundation
 import Photos
@@ -32,6 +33,7 @@ class VideoTrimmingEditorViewController: UIViewController {
     var startCallback: (() -> Void)?
     var successCallback: (((String, String)) -> Void)?
     var errorCallback: (() -> Void)?
+    var progressCallback: ((Float) -> Void)?
 
     init(_ inputPath: String, maxDuration: Int) {
         self.inputPath = inputPath
@@ -262,6 +264,15 @@ class VideoTrimmingEditorViewController: UIViewController {
                         self.successCallback?(self.formatResult())
                     } else {
                         self.errorCallback?()
+                    }
+                }
+                
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                   
+                    self.progressCallback!(exportSession.progress)
+                    
+                    if exportSession.status != .exporting {
+                        timer.invalidate()
                     }
                 }
             }
