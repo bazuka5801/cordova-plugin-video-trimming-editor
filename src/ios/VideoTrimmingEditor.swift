@@ -1,3 +1,4 @@
+import Cordova
 import Foundation
 import AVFoundation
 import PryntTrimmerView
@@ -49,7 +50,7 @@ extension UIViewController {
     
     func startIndicator() {
         
-        let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
         
         loadingIndicator.center = self.view.center
         let grayOutView = UIView(frame: self.view.frame)
@@ -61,8 +62,8 @@ extension UIViewController {
         
         self.view.addSubview(grayOutView)
         self.view.addSubview(loadingIndicator)
-        self.view.bringSubview(toFront: grayOutView)
-        self.view.bringSubview(toFront: loadingIndicator)
+        self.view.bringSubviewToFront(grayOutView)
+        self.view.bringSubviewToFront(loadingIndicator)
         
         loadingIndicator.startAnimating()
     }

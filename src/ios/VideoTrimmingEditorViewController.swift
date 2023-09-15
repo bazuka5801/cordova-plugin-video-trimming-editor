@@ -1,4 +1,5 @@
 import Cordova
+import Cordova
 import UIKit
 import AVFoundation
 import Photos
@@ -194,7 +195,7 @@ class VideoTrimmingEditorViewController: UIViewController {
         }
         
         let floatTime = Float64(self.trimmerView.startTime!.seconds)
-        let time = CMTimeMakeWithSeconds(floatTime, 600)
+        let time = CMTimeMakeWithSeconds(floatTime, preferredTimescale: 600)
         guard let cgImage = try? generator.copyCGImage(at: time, actualTime: nil) else {
             throw VideoTrimmingEditorError.createThumbnail
         }
@@ -217,7 +218,7 @@ class VideoTrimmingEditorViewController: UIViewController {
         
         do {
             let image = UIImage(cgImage: cgImage).rotatedBy(degree: degree, isCropped: false)
-            let pngImageData = UIImagePNGRepresentation(image)
+            let pngImageData = image.pngData()
             try pngImageData?.write(to: outputURL)
         } catch {
             throw VideoTrimmingEditorError.createThumbnail
@@ -253,12 +254,12 @@ class VideoTrimmingEditorViewController: UIViewController {
                 exportSession.canPerformMultiplePassesOverSourceMediaData = true
                 exportSession.outputURL = outputURL
                 exportSession.outputFileType = AVFileType.mp4
-                exportSession.timeRange = CMTimeRangeMake(kCMTimeZero, composition.duration)
+                exportSession.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: composition.duration)
                 exportSession.outputFileType = AVFileType.mov as AVFileType
                 
                 exportSession.exportAsynchronously {
                     if exportSession.status.rawValue == 3 {
-                        self.successCallback?(self.outputPath())
+                        self.successCallback?(self.formatResult())
                     } else {
                         self.errorCallback?()
                     }
