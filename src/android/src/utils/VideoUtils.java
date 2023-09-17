@@ -39,19 +39,19 @@ public class VideoUtils {
         // Here we try to find a track that has sync samples. Since we can only start decoding
         // at such a sample we SHOULD make sure that the start of the new fragment is exactly
         // such a frame
-        for (Track track : tracks) {
-            if (track.getSyncSamples() != null && track.getSyncSamples().length > 0) {
-                if (timeCorrected) {
-                    // This exception here could be a false positive in case we have multiple tracks
-                    // with sync samples at exactly the same positions. E.g. a single movie containing
-                    // multiple qualities of the same video (Microsoft Smooth Streaming file)
-                    throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
-                }
-                startTime = correctTimeToSyncSample(track, startTime, false);
-                endTime = correctTimeToSyncSample(track, endTime, true);
-                timeCorrected = true;
-            }
-        }
+//        for (Track track : tracks) {
+//            if (track.getSyncSamples() != null && track.getSyncSamples().length > 1) {
+//                if (timeCorrected) {
+//                    // This exception here could be a false positive in case we have multiple tracks
+//                    // with sync samples at exactly the same positions. E.g. a single movie containing
+//                    // multiple qualities of the same video (Microsoft Smooth Streaming file)
+//                    throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
+//                }
+//                startTime = correctTimeToSyncSample(track, startTime, false);
+//                endTime = correctTimeToSyncSample(track, endTime, true);
+//                timeCorrected = true;
+//            }
+//        }
         for (Track track : tracks) {
             long currentSample = 0;
             double currentTime = 0;
