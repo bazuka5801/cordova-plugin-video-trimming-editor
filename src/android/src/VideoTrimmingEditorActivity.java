@@ -90,6 +90,8 @@ public class VideoTrimmingEditorActivity extends BaseActivity {
                         createThumbnail(callback, context, videoPath, thumbnailPath, startMs);
                     }
                 });
+            } else {
+                finish();
             }
         }
     }
