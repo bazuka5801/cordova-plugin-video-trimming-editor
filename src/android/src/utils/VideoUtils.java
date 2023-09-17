@@ -33,8 +33,8 @@ public class VideoUtils {
         // remove all tracks we will create new tracks from the old
         List<Track> tracks = movie.getTracks();
         movie.setTracks(new LinkedList<Track>());
-        double startTime = startMs / 1000;
-        double endTime = endMs / 1000;
+        double startTime = (double) startMs / 1000;
+        double endTime = (double) endMs / 1000;
         boolean timeCorrected = false;
         // Here we try to find a track that has sync samples. Since we can only start decoding
         // at such a sample we SHOULD make sure that the start of the new fragment is exactly
