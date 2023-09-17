@@ -26,9 +26,7 @@ import plugin.videotrimmingeditor.features.common.ui.BaseActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.FileDescriptorBitmapDecoder;
 import com.bumptech.glide.load.resource.bitmap.VideoBitmapDecoder;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -117,36 +115,37 @@ public class VideoTrimmingEditorActivity extends BaseActivity {
 
     // サムネイル生成
     private void createThumbnail(Callback callback, Context context, String videoPath, String thumbnailPath, int startMs) {
-        BitmapPool bitmapPool = Glide.get(context).getBitmapPool();
-        FileDescriptorBitmapDecoder decoder = new FileDescriptorBitmapDecoder(
-            new VideoBitmapDecoder(startMs),
-            bitmapPool,
-            DecodeFormat.PREFER_ARGB_8888
-        );
-
-        Glide.with(context)
-            .load(videoPath)
-            .asBitmap()
-            .videoDecoder(decoder)
-            .into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    try {
-                        OutputStream outputStream = new FileOutputStream(new File(thumbnailPath));
-                        resource.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-                        outputStream.close();
-                        callback.success();
-                    } catch (IOException e) {
-                        callback.failed();
-                    }
-                }
-
-                @Override
-                public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                    super.onLoadFailed(e, errorDrawable);
-                    callback.failed();
-                }
-            });
+        callback.success();
+//        BitmapPool bitmapPool = Glide.get(context).getBitmapPool();
+//        FileDescriptorBitmapDecoder decoder = new FileDescriptorBitmapDecoder(
+//            new VideoBitmapDecoder(startMs),
+//            bitmapPool,
+//            DecodeFormat.PREFER_ARGB_8888
+//        );
+//
+//        Glide.with(context)
+//            .load(videoPath)
+//            .asBitmap()
+//            .videoDecoder(decoder)
+//            .into(new SimpleTarget<Bitmap>() {
+//                @Override
+//                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                    try {
+//                        OutputStream outputStream = new FileOutputStream(new File(thumbnailPath));
+//                        resource.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
+//                        outputStream.close();
+//                        callback.success();
+//                    } catch (IOException e) {
+//                        callback.failed();
+//                    }
+//                }
+//
+//                @Override
+//                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//                    super.onLoadFailed(e, errorDrawable);
+//                    callback.failed();
+//                }
+//            });
     }
 
     private class CompressAsyncTask extends AsyncTask<Void, Void, Void> {
