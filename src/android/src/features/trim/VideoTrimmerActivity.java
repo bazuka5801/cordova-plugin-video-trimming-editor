@@ -11,7 +11,7 @@ import android.util.Log;
 
 import java.io.File;
 
-import io.cordova.hellocordova.databinding.ActivityVideoTrimBinding;
+import capacitor.cordova.android.plugins.databinding.ActivityVideoTrimBinding;
 import plugin.videotrimmingeditor.features.common.ui.BaseActivity;
 import plugin.videotrimmingeditor.features.compress.VideoCompressor;
 import plugin.videotrimmingeditor.interfaces.VideoCompressListener;
