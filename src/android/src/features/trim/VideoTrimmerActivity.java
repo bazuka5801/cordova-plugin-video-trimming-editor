@@ -87,7 +87,7 @@ public class VideoTrimmerActivity extends BaseActivity implements VideoTrimListe
   public void onFinishTrim(String in, int startMs) {
     if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
     // ToastUtil.longShow(this, getString(R.string.trimmed_done));
-    ToastUtil.longShow(this, getString(getResources().getIdentifier("trimmed_done", "string", getPackageName())));
+//    ToastUtil.longShow(this, getString(getResources().getIdentifier("trimmed_done", "string", getPackageName())));
 
     Intent intent = new Intent();
     intent.putExtra(this.VIDEO_OUTPUT_KEY, in);
