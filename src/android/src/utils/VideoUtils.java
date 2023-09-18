@@ -9,6 +9,7 @@ import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
+import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 import com.googlecode.mp4parser.util.Matrix;
 import com.googlecode.mp4parser.util.Path;
@@ -39,19 +40,19 @@ public class VideoUtils {
         // Here we try to find a track that has sync samples. Since we can only start decoding
         // at such a sample we SHOULD make sure that the start of the new fragment is exactly
         // such a frame
-//        for (Track track : tracks) {
-//            if (track.getSyncSamples() != null && track.getSyncSamples().length > 1) {
-//                if (timeCorrected) {
-//                    // This exception here could be a false positive in case we have multiple tracks
-//                    // with sync samples at exactly the same positions. E.g. a single movie containing
-//                    // multiple qualities of the same video (Microsoft Smooth Streaming file)
-//                    throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
-//                }
-//                startTime = correctTimeToSyncSample(track, startTime, false);
-//                endTime = correctTimeToSyncSample(track, endTime, true);
-//                timeCorrected = true;
-//            }
-//        }
+        for (Track track : tracks) {
+            if (track.getSyncSamples() != null && track.getSyncSamples().length > 1) {
+                if (timeCorrected) {
+                    // This exception here could be a false positive in case we have multiple tracks
+                    // with sync samples at exactly the same positions. E.g. a single movie containing
+                    // multiple qualities of the same video (Microsoft Smooth Streaming file)
+                    throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
+                }
+                startTime = correctTimeToSyncSample(track, startTime, false);
+                endTime = correctTimeToSyncSample(track, endTime, true);
+                timeCorrected = true;
+            }
+        }
         for (Track track : tracks) {
             long currentSample = 0;
             double currentTime = 0;
@@ -74,7 +75,7 @@ public class VideoUtils {
                 currentTime += (double) track.getSampleDurations()[i] / (double) track.getTrackMetaData().getTimescale();
                 currentSample++;
             }
-            movie.addTrack(new CroppedTrack(track, startSample, endSample));
+            movie.addTrack(new AppendTrack(new CroppedTrack(track, startSample, endSample)));
         }
 
         Container out = new DefaultMp4Builder().build(movie);
