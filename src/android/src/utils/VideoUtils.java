@@ -48,9 +48,13 @@ public class VideoUtils {
                     // multiple qualities of the same video (Microsoft Smooth Streaming file)
                     throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
                 }
-                startTime = correctTimeToSyncSample(track, startTime, false);
-                endTime = correctTimeToSyncSample(track, endTime, true);
-                timeCorrected = true;
+                double startTime1 = correctTimeToSyncSample(track, startTime, false);
+                double endTime1 = correctTimeToSyncSample(track, endTime, true);
+                if (startTime1 != endTime1 && endTime1 != 0.00) {
+                    startTime = startTime1;
+                    endTime = endTime1;
+                    timeCorrected = true;
+                }
             }
         }
         for (Track track : tracks) {
