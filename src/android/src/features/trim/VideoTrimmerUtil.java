@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blankj.utilcode.util.UriUtils;
+
 import plugin.videotrimmingeditor.interfaces.VideoTrimListener;
 
 import java.io.File;
@@ -59,7 +61,7 @@ public class VideoTrimmerUtil {
     return (SCREEN_WIDTH_FULL - RECYCLER_VIEW_PADDING * 2) / getVideoMaxTime();
   }
 
-  public static void trim(Context context, String inputFile, String outputFile, long startMs, long endMs, final VideoTrimListener callback) {
+  public static void trim(Context context, Uri inputFile, String outputFile, long startMs, long endMs, final VideoTrimListener callback) {
     final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
     final String outputName = "trimmedVideo_" + timeStamp + ".mp4";
     outputFile = outputFile + "/" + outputName;
@@ -70,7 +72,10 @@ public class VideoTrimmerUtil {
     //String duration = String.valueOf(endMs - startMs);
 
     try {
-      File input = new File(inputFile);
+      File input = UriUtils.uri2File(inputFile);
+      if (input == null) {
+        input = new File(inputFile.getPath());
+      }
       File output = new File(outputFile);
 
       callback.onStartTrim();

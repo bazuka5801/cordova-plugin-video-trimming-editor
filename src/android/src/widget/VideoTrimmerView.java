@@ -34,6 +34,8 @@ import iknow.android.utils.thread.UiThreadExecutor;
 
 import static plugin.videotrimmingeditor.features.trim.VideoTrimmerUtil.VIDEO_FRAMES_WIDTH;
 
+import com.blankj.utilcode.util.UriUtils;
+
 /**
  * Author：J.Chou
  * Date：  2016.08.01 2:23 PM
@@ -281,7 +283,7 @@ public class VideoTrimmerView extends FrameLayout implements IVideoTrimmerView {
     } else {
       mVideoView.pause();
       VideoTrimmerUtil.trim(mContext,
-          mSourceUri.getPath(),
+              mSourceUri,
           StorageUtil.getCacheDir(),
           mLeftProgressPos,
           mRightProgressPos,
