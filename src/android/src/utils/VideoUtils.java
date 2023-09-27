@@ -1,7 +1,9 @@
 package plugin.videotrimmingeditor.utils;
 
+import android.net.Uri;
 import android.util.Log;
 
+import com.blankj.utilcode.util.UriUtils;
 import com.coremedia.iso.boxes.Container;
 import com.coremedia.iso.boxes.MovieHeaderBox;
 import com.googlecode.mp4parser.FileDataSourceImpl;
@@ -27,6 +29,21 @@ import java.util.List;
  * @since 3/23/16.
  */
 public class VideoUtils {
+    public static boolean checkFileSupport(String src) {
+        try {
+            File input = UriUtils.uri2File(Uri.parse(src));
+            if (input == null) {
+                input = new File(Uri.parse(src).getPath());
+            }
+
+            FileDataSourceImpl file = new FileDataSourceImpl(input);
+            Movie movie = MovieCreator.build(file);
+            return !movie.getTracks().isEmpty();
+        } catch (Exception e) {
+            Log.e("checkFileSupport", e.getMessage(), e);
+            return false;
+        }
+    }
 
     public static void startTrim(File src, File dst, int startMs, int endMs) throws IOException {
         FileDataSourceImpl file = new FileDataSourceImpl(src);

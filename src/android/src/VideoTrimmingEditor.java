@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import iknow.android.utils.BaseUtils;
 import plugin.videotrimmingeditor.features.trim.VideoTrimmerActivity;
 import plugin.videotrimmingeditor.features.trim.VideoTrimmerUtil;
+import plugin.videotrimmingeditor.utils.VideoUtils;
 
 public class VideoTrimmingEditor extends CordovaPlugin {
 
@@ -42,6 +43,16 @@ public class VideoTrimmingEditor extends CordovaPlugin {
             intent.putExtras(bundle);
             this.cordova.getActivity().startActivityForResult(intent, VideoTrimmerActivity.VIDEO_TRIM_REQUEST_CODE);
 
+            return true;
+        } else if (action.equals("check")) {
+            JSONObject params = data.getJSONObject(0);
+            String inputPath = params.get("input_path").toString();
+
+            boolean result = VideoUtils.checkFileSupport(inputPath);
+
+            JSONObject json = new JSONObject();
+            json.put("result", result);
+            callbackContext.success(json);
             return true;
         } else {
             return false;
