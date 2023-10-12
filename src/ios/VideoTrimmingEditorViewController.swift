@@ -1,6 +1,4 @@
 import Cordova
-import Cordova
-import Cordova
 import UIKit
 import AVFoundation
 import Photos
@@ -72,7 +70,7 @@ class VideoTrimmingEditorViewController: UIViewController {
         view.addSubview(duration)
         
         trimmerView.handleColor = UIColor.white
-        trimmerView.mainColor = UIColor.darkGray
+        trimmerView.mainColor = UIColor(hex: "#15a380")!
         trimmerView.positionBarColor = UIColor.red
         trimmerView.maxDuration = maxDuration
         trimmerView.frame = CGRect(x: margin, y: heightFrame - 150, width: view.frame.width - margin*2, height: 65)
