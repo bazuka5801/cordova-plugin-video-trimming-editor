@@ -69,9 +69,9 @@ class VideoTrimmingEditorViewController: UIViewController {
         duration.frame = CGRect(x: 0, y: heightFrame - 180, width: view.frame.width, height: 20)
         view.addSubview(duration)
         
-        trimmerView.handleColor = UIColor.white
+        trimmerView.handleColor = UIColor(hex: "#fde88e")!
         trimmerView.mainColor = UIColor(hex: "#15a380")!
-        trimmerView.positionBarColor = UIColor.red
+        trimmerView.positionBarColor = UIColor(hex: "#fde88e")!
         trimmerView.maxDuration = maxDuration
         trimmerView.frame = CGRect(x: margin, y: heightFrame - 150, width: view.frame.width - margin*2, height: 65)
         trimmerView.translatesAutoresizingMaskIntoConstraints = true
