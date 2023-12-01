@@ -1,4 +1,5 @@
 import Cordova
+import Cordova
 import UIKit
 import AVFoundation
 import Photos
@@ -69,9 +70,9 @@ class VideoTrimmingEditorViewController: UIViewController {
         duration.frame = CGRect(x: 0, y: heightFrame - 180, width: view.frame.width, height: 20)
         view.addSubview(duration)
         
-        trimmerView.handleColor = UIColor(hex: "#fde88e")!
+        trimmerView.handleColor = .white
         trimmerView.mainColor = UIColor(hex: "#15a380")!
-        trimmerView.positionBarColor = UIColor(hex: "#fde88e")!
+        trimmerView.positionBarColor = .red
         trimmerView.maxDuration = maxDuration
         trimmerView.frame = CGRect(x: margin, y: heightFrame - 150, width: view.frame.width - margin*2, height: 65)
         trimmerView.translatesAutoresizingMaskIntoConstraints = true
@@ -82,35 +83,50 @@ class VideoTrimmingEditorViewController: UIViewController {
         // let systemBlueColor = UIColor(red: 0, green: 122 / 255, blue: 1, alpha: 1)
         
         cancelBtn.setTitle("Cancel", for: UIControl.State.normal)
-        cancelBtn.setTitleColor(UIColor.black, for: UIControl.State.normal)
-        cancelBtn.frame = CGRect(x: 20, y: heightFrame - 30, width: 120, height: 20)
+        cancelBtn.setTitleColor(UIColor(hex: "#15a380")!, for: UIControl.State.normal)
+        cancelBtn.frame = CGRect(x: 60, y: heightFrame - 30, width: 120, height: 20)
         cancelBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         cancelBtn.addTarget(self, action: #selector(onCancel(sender:)), for: .touchUpInside)
         view.addSubview(cancelBtn)
         
+        let playPauseBtnView = UIView(frame: CGRect(x: view.frame.width/2 - 25, y: heightFrame - 45, width: 50, height: 50))
+        
+        playPauseBtnView.layer.borderWidth = 1
+        playPauseBtnView.layer.borderColor = UIColor.black.cgColor
+        playPauseBtnView.layer.cornerRadius = playPauseBtnView.frame.width / 2
+        
         playBtn.image = UIImage(named: "ic_video_play_black.png")?.withRenderingMode(.alwaysTemplate)
         playBtn.contentMode = UIView.ContentMode.scaleAspectFit
-        playBtn.frame = CGRect(x: view.frame.width/2 - 10, y: heightFrame - 30, width: 20, height: 20)
-        playBtn.isUserInteractionEnabled = true
-        playBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onPlay(sender:))))
+        playBtn.frame = CGRect(x: 15, y: 15, width: 20, height: 20)
         playBtn.tintColor = UIColor.black
-        view.addSubview(playBtn)
+        playPauseBtnView.addSubview(playBtn)
         
+       
         pauseBtn.image = UIImage(named: "ic_video_pause_black.png")?.withRenderingMode(.alwaysTemplate)
         pauseBtn.contentMode = UIView.ContentMode.scaleAspectFit
-        pauseBtn.frame = CGRect(x: view.frame.width/2 - 10, y: heightFrame - 30, width: 20, height: 20)
-        pauseBtn.isUserInteractionEnabled = true
-        pauseBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onPause(sender:))))
+        pauseBtn.frame = CGRect(x: 15, y: 15, width: 20, height: 20)
         pauseBtn.isHidden = true
         pauseBtn.tintColor = UIColor.black
-        view.addSubview(pauseBtn)
+        playPauseBtnView.addSubview(pauseBtn)
         
-        trimmingBtn.setTitle("Finish", for: UIControl.State.normal)
-        trimmingBtn.setTitleColor(UIColor.black, for: UIControl.State.normal)
-        trimmingBtn.frame = CGRect(x: view.frame.width - 140, y: heightFrame - 30, width: 120, height: 20)
+        playPauseBtnView.isUserInteractionEnabled = true
+        playPauseBtnView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onPlayPause(sender:))))
+        
+        view.addSubview(playPauseBtnView)
+        
+        trimmingBtn.setTitle("Save", for: UIControl.State.normal)
+        trimmingBtn.setTitleColor(UIColor(hex: "#15a380")!, for: UIControl.State.normal)
+        trimmingBtn.frame = CGRect(x: 10, y: 10, width: 70, height: 20)
         trimmingBtn.addTarget(self, action: #selector(onTrimming(sender:)), for: .touchUpInside)
-        trimmingBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.right
-        view.addSubview(trimmingBtn)
+        trimmingBtn.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
+    
+        let trimmingBtnView = UIView(frame: CGRect(x: view.frame.width - 130, y: heightFrame - 40, width: 90, height: 40))
+        trimmingBtnView.addSubview(trimmingBtn)
+        trimmingBtnView.layer.borderWidth = 1
+        trimmingBtnView.layer.borderColor = UIColor(hex: "#15a380")!.cgColor
+        trimmingBtnView.layer.cornerRadius = 8
+        
+        view.addSubview(trimmingBtnView)
     }
     
     private func initializeData() {
@@ -316,7 +332,13 @@ class VideoTrimmingEditorViewController: UIViewController {
             trimmerView.seek(to: startTime)
         }
     }
-    
+    @objc func onPlayPause(sender: UITapGestureRecognizer) {
+        if player?.rate != 0 && player?.error == nil {
+            onPause(sender: sender)
+        } else {
+            onPlay(sender: sender)
+        }
+    }
     @objc func onPlay(sender: UITapGestureRecognizer) {
         player?.play()
         playBtn.isHidden = true
