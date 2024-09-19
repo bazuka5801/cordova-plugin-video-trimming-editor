@@ -1,7 +1,7 @@
 {
     "name": "@bazuka5801/cordova-plugin-video-trimming-editor",
-    "version": "0.0.22",
     "description": "",
+    "version": "0.0.23",
     "cordova": {
         "id": "cordova-plugin-video-trimming-editor",
         "platforms": [

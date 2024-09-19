@@ -184,7 +184,7 @@ class VideoTrimmingEditorViewController: UIViewController {
     }
     
     @objc func onCancel(sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        abandonPlayer()
     }
     
     @objc func onTrimming(sender: UIButton) {
@@ -240,6 +240,12 @@ class VideoTrimmingEditorViewController: UIViewController {
             throw VideoTrimmingEditorError.createThumbnail
         }
     }
+    
+    private func abandonPlayer() {
+        player?.pause()
+        player?.replaceCurrentItem(with: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
 
     // 非同期処理のためコールバックを引数にもつ
     private func trimmingVideo(success: @escaping ((String, String)) -> Void, failer: @escaping () -> Void) {
@@ -293,7 +299,7 @@ class VideoTrimmingEditorViewController: UIViewController {
         } catch {
             failer()
         }
-        self.dismiss(animated: true, completion: nil)
+        abandonPlayer()
     }
     
     private func formatResult() -> (String, String) {
