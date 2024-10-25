@@ -25,7 +25,7 @@ import iknow.android.utils.BuildConfig;
 public class StorageUtil {
 
   private static final String TAG = "StorageUtil";
-  private static String APP_DATA_PATH = "/Android/data/" + BuildConfig.APPLICATION_ID;
+  private static String APP_DATA_PATH = "/Android/data/" +BuildConfig.LIBRARY_PACKAGE_NAME;
   private static String sDataDir;
   private static String sCacheDir;
 
