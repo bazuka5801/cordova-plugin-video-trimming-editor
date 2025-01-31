@@ -49,43 +49,48 @@ public class ZVideoView extends VideoView {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    //int width = getDefaultSize(0, widthMeasureSpec);
-    //int height = getDefaultSize(0, heightMeasureSpec);
-    //if (height > width) {
-    //  //竖屏
-    //  if (videoRealH > videoRealW) {
-    //    //如果视频资源是竖屏
-    //    //占满屏幕
-    //    mVideoHeight = height;
-    //    mVideoWidth = width;
-    //  } else {
-    //    //如果视频资源是横屏
-    //    //宽度占满，高度保存比例
-    //    mVideoWidth = width;
-    //    float r = videoRealH / (float) videoRealW;
-    //    mVideoHeight = (int) (mVideoWidth * r);
-    //  }
-    //} else {
-    //  //横屏
-    //  if (videoRealH > videoRealW) {
-    //    //如果视频资源是竖屏
-    //    //宽度占满，高度保存比例
-    //    mVideoHeight = height;
-    //    float r = videoRealW / (float) videoRealH;
-    //    mVideoWidth = (int) (mVideoHeight * r);
-    //  } else {
-    //    //如果视频资源是横屏
-    //    //占满屏幕
-    //    mVideoHeight = height;
-    //    mVideoWidth = width;
-    //  }
-    //}
-    //if (videoRealH == videoRealW && videoRealH == 1) {
-    //  //没能获取到视频真实的宽高，自适应就可以了，什么也不用做
-    //  super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    //} else {
-    //  setMeasuredDimension(mVideoWidth, mVideoHeight);
-    //}
+    int width = getDefaultSize(0, widthMeasureSpec);
+    int height = getDefaultSize(0, heightMeasureSpec);
+
+    Log.i("[VideoSize]", "Initial width: " + width + ", height: " + height);
+
+    if (height > width) {
+      Log.i("[VideoSize]", "Orientation: Portrait");
+      if (videoRealH > videoRealW) {
+        mVideoHeight = height;
+        float r = (float) videoRealW / videoRealH;
+        mVideoWidth = (int) (mVideoHeight * r);
+        Log.i("[VideoSize]", "Video is portrait, height fill, width adjust. mVideoWidth: " + mVideoWidth + ", mVideoHeight: " + mVideoHeight);
+      } else {
+        mVideoWidth = width;
+        float r = videoRealH / (float) videoRealW;
+        mVideoHeight = (int) (mVideoWidth * r);
+        Log.i("[VideoSize]", "Video is landscape, width fill, height adjust. mVideoWidth: " + mVideoWidth + ", mVideoHeight: " + mVideoHeight);
+      }
+    } else {
+      // 横屏
+      Log.i("[VideoSize]", "Orientation: Landscape");
+      if (videoRealH > videoRealW) {
+        mVideoHeight = height;
+        float r = videoRealW / (float) videoRealH;
+        mVideoWidth = (int) (mVideoHeight * r);
+        Log.i("[VideoSize]", "Video is portrait, height fill, width adjust. mVideoWidth: " + mVideoWidth + ", mVideoHeight: " + mVideoHeight);
+      } else {
+        mVideoWidth = width;
+        float r = (float) videoRealH / videoRealW;
+        mVideoHeight = (int) (mVideoWidth * r);
+        Log.w("[VideoSize]", "Video is landscape, width fill, height adjust. mVideoWidth: " + mVideoWidth + ", mVideoHeight: " + mVideoHeight);
+      }
+    }
+
+    if (videoRealH == videoRealW && videoRealH == 1) {
+      // 没能获取到视频真实的宽高，自适应就可以了，什么也不用做
+      Log.i("[VideoSize]", "Could not get video real size, use default.");
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    } else {
+      setMeasuredDimension(mVideoWidth, mVideoHeight);
+      Log.i("[VideoSize]", "Final dimensions: mVideoWidth: " + mVideoWidth + ", mVideoHeight: " + mVideoHeight);
+    }
 
   }
 
